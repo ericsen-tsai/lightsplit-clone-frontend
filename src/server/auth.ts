@@ -58,6 +58,9 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
+  pages: {
+    signIn: '/auth/signin',
+  },
 }
 
 /**
