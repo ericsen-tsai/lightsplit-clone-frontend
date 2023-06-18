@@ -31,7 +31,7 @@ function Home() {
           {session ? (
             <GroupsGrid />
           ) : (
-            <>
+            <div className="flex items-center flex-col justify-center mt-[40vh]">
               <Button
                 onClick={() => {
                   void signIn()
@@ -42,7 +42,7 @@ function Home() {
               <Typography>
                 You have to login to see your groups
               </Typography>
-            </>
+            </div>
           )}
         </main>
       </Layout>

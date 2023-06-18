@@ -34,8 +34,9 @@ function GroupCard(props: Group) {
 
 function GroupsGrid() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full relative">
       {fakeGroups.map((group) => <GroupCard {...group} key={group.id} />)}
+      <Button variant="default" className="fixed bottom-10 left-1/2 -translate-x-1/2 w-[calc(100vw-4rem)] sm:w-1/4">ADD GROUP</Button>
     </div>
   )
 }

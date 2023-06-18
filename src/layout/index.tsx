@@ -22,7 +22,7 @@ function Layout({ children }: Props) {
   console.log(session, status)
 
   return (
-    <div className="relative w-full font-sans">
+    <div className="relative h-full w-full font-sans">
       <header className="fixed left-0 top-0 flex w-full items-center justify-between px-3 py-5 backdrop-blur-md">
         <nav>
           <PiggyBank className="h-10 w-10 cursor-pointer rounded-full bg-[#ADDDA5] stroke-black p-1 transition-all duration-500 hover:scale-110 dark:bg-teal-500 dark:stroke-white" />
@@ -56,7 +56,7 @@ function Layout({ children }: Props) {
           </DropdownMenu>
         </div>
       </header>
-      <div className="container min-h-screen pt-[5rem]">
+      <div className="container h-full min-h-screen pt-[5rem]">
         {children}
       </div>
     </div>
