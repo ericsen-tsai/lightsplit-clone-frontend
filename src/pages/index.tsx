@@ -1,9 +1,10 @@
 import Head from 'next/head'
-import { Button, ThemeToggle } from '@/components'
 import { signIn, signOut, useSession } from 'next-auth/react'
 import { getServerSession } from 'next-auth/next'
 import { type GetServerSidePropsContext } from 'next'
 
+import { Button, Typography } from '@/components'
+import { GroupsGrid } from '@/containers'
 import Layout from '@/layout'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 
@@ -26,23 +27,22 @@ function Home() {
         <link rel="icon" href="/icon.svg" />
       </Head>
       <Layout>
-        <main className="flex flex-col items-center justify-center">
+        <main className="flex flex-col w-full items-center justify-center">
           {session ? (
-            <Button
-              onClick={() => {
-                void signOut()
-              }}
-            >
-              Logout
-            </Button>
+            <GroupsGrid />
           ) : (
-            <Button
-              onClick={() => {
-                void signIn()
-              }}
-            >
-              Login
-            </Button>
+            <>
+              <Button
+                onClick={() => {
+                  void signIn()
+                }}
+              >
+                Login
+              </Button>
+              <Typography>
+                You have to login to see your groups
+              </Typography>
+            </>
           )}
         </main>
       </Layout>

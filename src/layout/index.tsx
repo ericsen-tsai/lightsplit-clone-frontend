@@ -1,7 +1,15 @@
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 import { PiggyBank } from 'lucide-react'
+
 import {
-  AvatarFallback, AvatarImage, Avatar, ThemeToggle,
+  AvatarFallback,
+  AvatarImage,
+  Avatar,
+  ThemeToggle,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
 } from '@/components'
 
 type Props = {
@@ -14,20 +22,41 @@ function Layout({ children }: Props) {
   console.log(session, status)
 
   return (
-    <div className="w-full relative">
-      <header className="flex justify-between py-5 px-3 items-center fixed top-0 left-0 w-full backdrop-blur-md">
+    <div className="relative w-full font-sans">
+      <header className="fixed left-0 top-0 flex w-full items-center justify-between px-3 py-5 backdrop-blur-md">
         <nav>
-          <PiggyBank className="w-10 h-10 bg-[#ADDDA5] dark:bg-teal-500 dark:stroke-white rounded-full stroke-black p-1 hover:scale-110 transition-all duration-500 cursor-pointer" />
+          <PiggyBank className="h-10 w-10 cursor-pointer rounded-full bg-[#ADDDA5] stroke-black p-1 transition-all duration-500 hover:scale-110 dark:bg-teal-500 dark:stroke-white" />
         </nav>
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <Avatar>
-            <AvatarImage src={session?.user.image || ''} alt={session?.user.name || ''} />
-            <AvatarFallback className="dark:text-black">UN</AvatarFallback>
-          </Avatar>
+          <DropdownMenu>
+            <DropdownMenuTrigger disabled={!session?.user.name}>
+              <Avatar>
+                <AvatarImage
+                  src={session?.user.image || ''}
+                  alt={session?.user.name || ''}
+                />
+                <AvatarFallback className="dark:text-black">UN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {/* <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem>Team</DropdownMenuItem>
+              <DropdownMenuItem>Subscription</DropdownMenuItem> */}
+              <DropdownMenuItem
+                onClick={() => { void signOut() }}
+                className="cursor-pointer"
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
-      <div className="container grid place-content-center pt-5 min-h-screen">
+      <div className="container min-h-screen pt-[5rem]">
         {children}
       </div>
     </div>

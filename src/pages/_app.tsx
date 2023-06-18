@@ -14,13 +14,22 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => (
-  <div className={inter.className}>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
-    </ThemeProvider>
-  </div>
+  <>
+    <style jsx global>
+      {`
+        html {
+          font-family: ${inter.style.fontFamily};
+        }
+      `}
+    </style>
+    <div className={inter.className}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ThemeProvider>
+    </div>
+  </>
 
 )
 
