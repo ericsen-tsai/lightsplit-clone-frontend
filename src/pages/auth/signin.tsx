@@ -1,9 +1,12 @@
+/* eslint-disable react/jsx-pascal-case */
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
 } from 'next'
 import { getProviders, signIn } from 'next-auth/react'
 import { getServerSession } from 'next-auth/next'
+
+import { Button, Icons } from '@/components'
 import { authOptions } from '../api/auth/[...nextauth]'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -26,18 +29,18 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log(providers)
   return (
-    <>
+    <div className="container grid place-content-center h-full min-h-screen">
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
-          <button type="button" onClick={() => { void signIn(provider.id) }}>
+          <Button onClick={() => { void signIn(provider.id) }}>
+            <Icons.google className="h-5 w-5 mr-2" />
             Sign in with
             {' '}
             {provider.name}
-          </button>
+          </Button>
         </div>
       ))}
-    </>
+    </div>
   )
 }
