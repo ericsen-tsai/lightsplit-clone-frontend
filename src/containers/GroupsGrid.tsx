@@ -11,17 +11,18 @@ import {
   Typography,
 } from '@/components'
 import { type Group } from '@/types'
+import { useRouter } from 'next/router'
 
 function GroupCard(props: Group) {
   const { name, note, publicPermission } = props
   return (
-    <Card className="min-w-[200px] w-full">
+    <Card className="w-full min-w-[200px]">
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{note}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Typography className="uppercase font-bold">
+        <Typography className="font-bold uppercase">
           {publicPermission}
         </Typography>
       </CardContent>
@@ -33,10 +34,19 @@ function GroupCard(props: Group) {
 }
 
 function GroupsGrid() {
+  const router = useRouter()
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full relative">
-      {fakeGroups.map((group) => <GroupCard {...group} key={group.id} />)}
-      <Button variant="default" className="fixed bottom-10 left-1/2 -translate-x-1/2 w-[calc(100vw-4rem)] sm:w-1/4">ADD GROUP</Button>
+    <div className="relative grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+      {fakeGroups.map((group) => (
+        <GroupCard {...group} key={group.id} />
+      ))}
+      <Button
+        variant="default"
+        className="fixed bottom-10 left-1/2 w-[calc(100vw-4rem)] -translate-x-1/2 sm:w-1/4"
+        onClick={() => { void router.push('/group/new') }}
+      >
+        Add Group
+      </Button>
     </div>
   )
 }

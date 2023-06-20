@@ -4,6 +4,7 @@ import { type AppType } from 'next/app'
 import { Inter } from 'next/font/google'
 
 import { api } from '@/utils/api'
+import Layout from '@/layout'
 import { ThemeProvider } from 'next-themes'
 import '@/styles/globals.css'
 
@@ -25,7 +26,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <div className={inter.className}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <SessionProvider session={session}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </SessionProvider>
       </ThemeProvider>
     </div>
