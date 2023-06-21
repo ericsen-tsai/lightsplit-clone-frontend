@@ -15,8 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
   Button,
+  Input,
 } from '@/components'
-import { Input } from '@/components/ui/input'
 
 const formSchema = z.object({
   member: z.array(
@@ -31,16 +31,15 @@ const formSchema = z.object({
 
 export type FormSchema = z.infer<typeof formSchema>
 
-function GroupMemberForm() {
+type Props = {
+  memberDefaultValues?: FormSchema['member']
+}
+
+function GroupMemberForm({ memberDefaultValues }: Props) {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      member: [
-        {
-          name: 'Hello',
-          permission: 'edit',
-        },
-      ],
+      member: memberDefaultValues,
     },
   })
 
@@ -142,7 +141,7 @@ function GroupMemberForm() {
           type="button"
           className="w-full"
           variant="default"
-          onClick={() => append({ name: `Member ${fields.length}`, permission: 'edit' })}
+          onClick={() => append({ name: `Member ${fields.length + 1}`, permission: 'edit' })}
         >
           Add Member
         </Button>
