@@ -9,6 +9,8 @@ import {
 } from '@/components'
 import { useRouter } from 'next/router'
 
+import { GroupDashboardTabs } from '@/containers'
+
 const groupName = 'This is for test'
 const note = 'This is your note'
 
@@ -50,6 +52,8 @@ function Group() {
       <Typography variant="h4" className="mt-4 text-primary/50">
         {note}
       </Typography>
+      <SelectSeparator className="mt-5 bg-primary/20" />
+      <GroupDashboardTabs />
       <SelectSeparator className="mt-5 bg-primary/20" />
     </div>
   )

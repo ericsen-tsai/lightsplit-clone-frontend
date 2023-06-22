@@ -19,7 +19,7 @@ const config = {
     project: path.join(__dirname, 'tsconfig.json'),
   },
   plugins: ['@typescript-eslint'],
-  extends: ['airbnb', 'next/core-web-vitals', 'plugin:@typescript-eslint/recommended'],
+  extends: ['airbnb', 'next/core-web-vitals', 'plugin:@typescript-eslint/recommended', 'plugin:tailwindcss/recommended'],
   rules: {
     '@typescript-eslint/consistent-type-imports': [
       'warn',
@@ -68,6 +68,7 @@ const config = {
     '@typescript-eslint/object-curly-spacing': ['error', 'always'],
     quotes: ['error', 'single'],
   },
+  root: true,
 }
 
 module.exports = config

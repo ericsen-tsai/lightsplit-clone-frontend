@@ -65,7 +65,7 @@ function GroupMemberForm({ memberDefaultValues }: Props) {
         <li className="mt-10 flex items-end gap-3">
           <FormItem className="flex-1">
             <FormLabel>Name</FormLabel>
-            <Input placeholder="Me" disabled />
+            <Input placeholder="You" disabled />
           </FormItem>
           <FormItem>
             <FormLabel>Permission</FormLabel>
@@ -89,7 +89,7 @@ function GroupMemberForm({ memberDefaultValues }: Props) {
         </li>
         <ul>
           {fields.map((item, index) => (
-            <li key={item.id} className="flex items-end gap-3 mb-5">
+            <li key={item.id} className="mb-5 flex items-end gap-3">
               <FormField
                 control={form.control}
                 name={`member.${index}.name`}

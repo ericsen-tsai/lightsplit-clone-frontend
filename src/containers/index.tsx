@@ -2,3 +2,4 @@
 export { default as GroupsGrid } from './GroupsGrid'
 export { default as GroupForm } from './GroupForm'
 export { default as GroupMemberForm } from './GroupMemberForm'
+export { default as GroupDashboardTabs } from './GroupDashboardTabs'

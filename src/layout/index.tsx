@@ -24,7 +24,7 @@ function Layout({ children }: Props) {
 
   return (
     <div className="relative h-full w-full font-sans">
-      <header className="fixed left-0 top-0 flex w-full items-center justify-between px-3 py-5 backdrop-blur-md z-30">
+      <header className="fixed left-0 top-0 z-30 flex w-full items-center justify-between px-3 py-5 backdrop-blur-md">
         <nav>
           <button
             type="button"

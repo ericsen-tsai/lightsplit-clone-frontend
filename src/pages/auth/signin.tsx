@@ -30,11 +30,11 @@ export default function SignIn({
   providers,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <div className="container grid place-content-center h-full min-h-screen">
+    <div className="container grid h-[calc(100vh-10rem)] place-content-center">
       {Object.values(providers).map((provider) => (
         <div key={provider.name}>
           <Button onClick={() => { void signIn(provider.id) }}>
-            <Icons.google className="h-5 w-5 mr-2" />
+            <Icons.google className="mr-2 h-5 w-5" />
             Sign in with
             {' '}
             {provider.name}
