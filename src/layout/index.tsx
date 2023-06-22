@@ -20,11 +20,11 @@ type Props = {
 function Layout({ children }: Props) {
   const { data: session, status } = useSession()
   const router = useRouter()
-  console.log(session, status)
+  console.log(status, 'status')
 
   return (
     <div className="relative h-full w-full font-sans">
-      <header className="fixed left-0 top-0 flex w-full items-center justify-between px-3 py-5 backdrop-blur-md z-[9999]">
+      <header className="fixed left-0 top-0 flex w-full items-center justify-between px-3 py-5 backdrop-blur-md z-30">
         <nav>
           <button
             type="button"
@@ -66,7 +66,7 @@ function Layout({ children }: Props) {
           </DropdownMenu>
         </div>
       </header>
-      <div className="container h-full min-h-screen pt-[5rem]">{children}</div>
+      <div className="container h-full min-h-screen pt-28">{children}</div>
     </div>
   )
 }

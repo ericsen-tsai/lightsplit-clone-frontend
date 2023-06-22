@@ -64,7 +64,7 @@ function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
         onSubmit={(...args) => {
           void form.handleSubmit(onSubmit)(...args)
         }}
-        className="space-y-8"
+        className="space-y-8 relative"
       >
         <FormField
           control={form.control}
@@ -142,7 +142,7 @@ function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
             </FormItem>
           )}
         />
-        <div className="flex gap-3 w-full">
+        <div className="flex gap-3 fixed bottom-10 left-1/2 w-[calc(100vw-4rem)] -translate-x-1/2 sm:w-1/4">
           {isEdit && <Button type="button" className="flex-1" variant="destructive">Delete</Button>}
           <Button type="submit" className="flex-1">{isEdit ? 'Update' : 'Submit'}</Button>
         </div>
