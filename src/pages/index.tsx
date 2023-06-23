@@ -25,11 +25,11 @@ function Home() {
         <meta name="description" content="Lightsplit Clone Frontend" />
         <link rel="icon" href="/icon.svg" />
       </Head>
-      <main className="flex flex-col w-full items-center justify-center">
+      <main className="flex w-full flex-col items-center justify-center">
         {session ? (
           <GroupsGrid />
         ) : (
-          <div className="flex items-center flex-col justify-center mt-[40vh]">
+          <div className="mt-[40vh] flex flex-col items-center justify-center">
             <Button
               onClick={() => {
                 void signIn()
