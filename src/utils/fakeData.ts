@@ -31,7 +31,7 @@ const fakeMembers: Member[] = [
   {
     id: 'm1a2b3',
     userId: 1527,
-    name: 'John Doe',
+    name: 'Ericsen Tsai',
     permission: 'edit',
     primaryBalance: 500, // Grocery: +250, Utilities: +150, Dinner: +100
   },

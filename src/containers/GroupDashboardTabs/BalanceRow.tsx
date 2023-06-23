@@ -51,7 +51,7 @@ function BalanceRow({
         <span className="relative z-10 my-auto">{balanceInfo}</span>
         <span
           className={`absolute top-0 z-0 h-full ${
-            balance < 0 ? 'right-0 bg-red-200 dark:bg-red-700' : 'left-0 bg-green-200 dark:bg-green-700'
+            balance < 0 ? 'right-0 bg-red-300 dark:bg-red-700' : 'left-0 bg-green-300 dark:bg-green-700'
           }`}
           style={{
             width: `${Math.floor((Math.abs(balance) / maxBalance) * 100)}%`,

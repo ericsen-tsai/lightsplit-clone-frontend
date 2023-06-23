@@ -1,23 +1,20 @@
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-  Input,
-  Label,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from '@/components'
 
-import { fakeMembers } from '@/utils/fakeData'
+import { fakeMembers, fakeRecords } from '@/utils/fakeData'
 import BalanceRow from './BalanceRow'
+import RecordRows from './RecordRows'
 
-function TabsDemo() {
+function GroupDashboardTabs() {
   return (
     <Tabs defaultValue="records" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
@@ -33,18 +30,8 @@ function TabsDemo() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" defaultValue="Pedro Duarte" />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" defaultValue="@peduarte" />
-            </div>
+            <RecordRows members={fakeMembers} records={fakeRecords} yourMemberId="m1a2b3" />
           </CardContent>
-          <CardFooter>
-            <Button>Save changes</Button>
-          </CardFooter>
         </Card>
       </TabsContent>
       <TabsContent value="balances">
@@ -73,4 +60,4 @@ function TabsDemo() {
   )
 }
 
-export default TabsDemo
+export default GroupDashboardTabs

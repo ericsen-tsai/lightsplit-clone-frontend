@@ -42,6 +42,32 @@ export const authOptions: NextAuthOptions = {
         id: token.sub,
       },
     }),
+    signIn({
+      user: userArgs,
+    }) {
+      // here to call login/google api and append access token
+      // and refresh token to user
+      // userArgs.test = 'hello'
+
+      if (userArgs) {
+        return true
+      }
+      return false
+    },
+    jwt({ token, user }) {
+      // append access token / refresh token to user
+      console.log('this is jwt')
+      console.log(user)
+      console.log('this is jwt')
+
+      // call verify token api to check if token is valid
+      // if not valid -> call refresh token api
+      // if valid -> return original token
+
+      return token
+    },
+    // in session callback, when there's no access token, raise error
+    // append access token and refresh token to session
   },
   providers: [
     GoogleProvider({
