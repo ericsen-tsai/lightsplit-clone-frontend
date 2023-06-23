@@ -36,7 +36,7 @@ function GroupCard(props: Group) {
 function GroupsGrid() {
   const router = useRouter()
   return (
-    <div className="relative grid w-full grid-cols-1 gap-3 sm:grid-cols-3">
+    <div className="relative grid w-full grid-cols-1 gap-3 pb-24 sm:grid-cols-3 sm:pb-0">
       {fakeGroups.map((group) => (
         <GroupCard {...group} key={group.id} />
       ))}

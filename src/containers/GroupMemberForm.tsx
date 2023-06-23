@@ -17,6 +17,7 @@ import {
   Button,
   Input,
 } from '@/components'
+import { useRouter } from 'next/router'
 
 const formSchema = z.object({
   member: z.array(
@@ -32,14 +33,15 @@ const formSchema = z.object({
 export type FormSchema = z.infer<typeof formSchema>
 
 type Props = {
+  isEdit?: boolean
   memberDefaultValues?: FormSchema['member']
 }
 
-function GroupMemberForm({ memberDefaultValues }: Props) {
+function GroupMemberForm({ isEdit = false, memberDefaultValues = [] }: Props) {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      member: memberDefaultValues,
+      member: isEdit ? memberDefaultValues : [],
     },
   })
 
@@ -47,6 +49,8 @@ function GroupMemberForm({ memberDefaultValues }: Props) {
     control: form.control,
     name: 'member' as never,
   })
+
+  const router = useRouter()
 
   // 2. Define a submit handler.
   function onSubmit(values: FormSchema) {
@@ -79,11 +83,7 @@ function GroupMemberForm({ memberDefaultValues }: Props) {
               </SelectContent>
             </Select>
           </FormItem>
-          <Button
-            variant="destructive"
-            type="button"
-            disabled
-          >
+          <Button variant="destructive" type="button" disabled>
             Delete
           </Button>
         </li>
@@ -145,12 +145,23 @@ function GroupMemberForm({ memberDefaultValues }: Props) {
         >
           Add Member
         </Button>
-        <Button
-          type="submit"
-          className="fixed bottom-10 left-1/2 w-[calc(100vw-4rem)] -translate-x-1/2 sm:w-1/4"
-        >
-          Save
-        </Button>
+        <div className="fixed bottom-10 left-1/2 flex w-[calc(100vw-4rem)] -translate-x-1/2 gap-3 sm:w-1/4">
+          {isEdit && (
+            <Button
+              type="button"
+              className="flex-1"
+              variant="secondary"
+              onClick={() => {
+                void router.back()
+              }}
+            >
+              Cancel
+            </Button>
+          )}
+          <Button type="submit" className="flex-1">
+            {isEdit ? 'Update' : 'Save'}
+          </Button>
+        </div>
       </form>
     </Form>
   )

@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@/components'
 import { type BalanceRecord, type Member } from '@/types'
+import { useRouter } from 'next/router'
 
 type RecordInfoRowProps = {
   what: BalanceRecord['what']
@@ -116,6 +117,8 @@ type RecordRowsProps = {
 }
 
 function RecordRows({ records, members, yourMemberId }: RecordRowsProps) {
+  const router = useRouter()
+
   return (
     <Accordion type="single" collapsible className="w-full">
       {records.map((record) => {
@@ -165,9 +168,18 @@ function RecordRows({ records, members, yourMemberId }: RecordRowsProps) {
                 ))}
               </div>
 
-              <div className="mt-5 flex w-full gap-3">
-                <Button type="button" className="flex-1" variant="destructive">Delete</Button>
-                <Button type="button" className="flex-1">Update</Button>
+              <div className="mt-5 flex w-full justify-end gap-3">
+                <Button
+                  type="button"
+                  className="w-1/2"
+                  onClick={
+                  () => {
+                    void router.push(`/group/${router.query.id as string}/record/${record.id}`)
+                  }
+                }
+                >
+                  Edit
+                </Button>
               </div>
             </AccordionContent>
           </AccordionItem>

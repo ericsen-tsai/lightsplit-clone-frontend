@@ -18,6 +18,7 @@ import {
   Button,
 } from '@/components'
 import { Input } from '@/components/ui/input'
+import { useRouter } from 'next/router'
 
 const formSchema = z.object({
   groupName: z.string().min(2, {
@@ -51,6 +52,7 @@ function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
         note: '',
       },
   })
+  const router = useRouter()
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -142,8 +144,20 @@ function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
             </FormItem>
           )}
         />
+        {isEdit && <Button type="button" variant="destructive">Delete Group</Button>}
         <div className="fixed bottom-10 left-1/2 flex w-[calc(100vw-4rem)] -translate-x-1/2 gap-3 sm:w-1/4">
-          {isEdit && <Button type="button" className="flex-1" variant="destructive">Delete</Button>}
+          {isEdit && (
+          <Button
+            type="button"
+            className="flex-1"
+            variant="secondary"
+            onClick={() => {
+              void router.back()
+            }}
+          >
+            Cancel
+          </Button>
+          )}
           <Button type="submit" className="flex-1">{isEdit ? 'Update' : 'Submit'}</Button>
         </div>
       </form>

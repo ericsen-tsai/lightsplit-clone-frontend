@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
   Typography,
   SelectSeparator,
+  Button,
 } from '@/components'
 import { useRouter } from 'next/router'
 
@@ -18,7 +19,7 @@ function Group() {
   const router = useRouter()
 
   return (
-    <div className="container flex max-w-[50rem] flex-col">
+    <div className="container relative flex max-w-[50rem] flex-col pb-20">
       <div className="flex items-center justify-between">
         <Typography variant="h3">{groupName}</Typography>
         <DropdownMenu>
@@ -28,9 +29,7 @@ function Group() {
           <DropdownMenuContent>
             <DropdownMenuItem
               onClick={() => {
-                void router.push(
-                  `/group/${(router.query.id as string)}/info`,
-                )
+                void router.push(`/group/${router.query.id as string}/info`)
               }}
               className="cursor-pointer"
             >
@@ -38,9 +37,10 @@ function Group() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                void router.push(
-                  `/group/${(router.query.id as string)}/member`,
-                )
+                void router.push({
+                  pathname: `/group/${router.query.id as string}/member`,
+                  query: { isEdit: true },
+                })
               }}
               className="cursor-pointer"
             >
@@ -55,6 +55,18 @@ function Group() {
       <SelectSeparator className="mt-5 bg-primary/20" />
       <GroupDashboardTabs />
       <SelectSeparator className="mt-5 bg-primary/20" />
+      <div className="fixed bottom-10 left-1/2 flex w-[calc(100vw-8rem)] -translate-x-1/2 justify-center gap-3 sm:w-full">
+        <Button
+          type="button"
+          className="backdrop-blur-xl"
+          variant="outline"
+          onClick={() => {
+            void router.push(`/group/${router.query.id as string}/record/new`)
+          }}
+        >
+          Add Record
+        </Button>
+      </div>
     </div>
   )
 }
