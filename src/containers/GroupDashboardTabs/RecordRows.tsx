@@ -55,8 +55,8 @@ const getFromWho = ({
   members: Member[]
   yourMemberId: string
 }) => record.fromMembers.map((member) => {
-  if (member.member === yourMemberId) return 'You'
-  return members.find((m) => m.id === member.member)?.name || 'Unknown'
+  if (member.memberId === yourMemberId) return 'You'
+  return members.find((m) => m.id === member.memberId)?.name || 'Unknown'
 })
 
 const getToWho = ({
@@ -68,8 +68,8 @@ const getToWho = ({
   members: Member[]
   yourMemberId: string
 }) => record.toMembers.map((member) => {
-  if (member.member === yourMemberId) return 'You'
-  return members.find((m) => m.id === member.member)?.name || 'Unknown'
+  if (member.memberId === yourMemberId) return 'You'
+  return members.find((m) => m.id === member.memberId)?.name || 'Unknown'
 })
 
 function RecordInfoRow({
@@ -131,7 +131,7 @@ function RecordRows({ records, members, yourMemberId }: RecordRowsProps) {
             ...a,
             amount: a.amount * (record.type === 'transfer' ? 1 : -1),
           })),
-        ].find((a) => a.member === yourMemberId)?.amount || 0
+        ].find((a) => a.memberId === yourMemberId)?.amount || 0
 
         return (
           <AccordionItem value={record.id} key={record.id}>

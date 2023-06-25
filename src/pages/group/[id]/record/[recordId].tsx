@@ -1,7 +1,7 @@
 import { RecordForm } from '@/containers'
 import { fakeMembers, fakeRecords } from '@/utils/fakeData'
 
-function RecordInfo() {
+function RecordUpdate() {
   return (
     <RecordForm
       isEdit
@@ -17,4 +17,4 @@ function RecordInfo() {
   )
 }
 
-export default RecordInfo
+export default RecordUpdate

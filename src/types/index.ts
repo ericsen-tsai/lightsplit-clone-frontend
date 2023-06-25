@@ -32,13 +32,13 @@ export const balanceRecordSchema = z.object({
   fromMembers: z.array(
     z.object({
       amount: z.number(),
-      member: z.string(),
+      memberId: z.string(),
     }),
   ),
   toMembers: z.array(
     z.object({
       amount: z.number(),
-      member: z.string(),
+      memberId: z.string(),
     }),
   ),
 })

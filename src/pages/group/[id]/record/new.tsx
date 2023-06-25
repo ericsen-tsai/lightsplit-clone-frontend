@@ -1,6 +1,11 @@
+import { RecordForm } from '@/containers'
+import { fakeMembers } from '@/utils/fakeData'
+
 function RecordNew() {
   return (
-    <div>RecordNew</div>
+    <RecordForm
+      members={fakeMembers}
+    />
   )
 }
 

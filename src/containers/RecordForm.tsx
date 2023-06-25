@@ -17,7 +17,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Label,
   Input,
   Checkbox,
   Typography,
@@ -35,13 +34,13 @@ const formSchema = z.object({
   }),
   paidBy: z.array(
     z.object({
-      member: z.string(),
+      memberId: z.string(),
       amount: z.number(),
     }),
   ),
   forWhom: z.array(
     z.object({
-      member: z.string(),
+      memberId: z.string(),
       amount: z.number(),
     }),
   ),
@@ -77,9 +76,9 @@ function RecordFormPartiesDialog({
     { isInvolved: boolean, name: string, amount: number | string, id: string }[]
   >(
     members.map((member) => ({
-      isInvolved: !!values?.map((val) => val.member).includes(member.id),
+      isInvolved: !!values?.map((val) => val.memberId).includes(member.id),
       name: member.name,
-      amount: values?.find((val) => member.id === val.member)?.amount || 0,
+      amount: values?.find((val) => member.id === val.memberId)?.amount || 0,
       id: member.id,
     })),
   )
@@ -100,7 +99,7 @@ function RecordFormPartiesDialog({
     }
     const amountsData = memberAmounts
       .filter((m) => m.isInvolved)
-      .map((m) => ({ member: m.id, amount: +m.amount }))
+      .map((m) => ({ memberId: m.id, amount: +m.amount }))
     setMemberAmounts((prev) => prev.map((m) => ({ ...m, amount: m.isInvolved ? m.amount : 0 })))
     setShowError(false)
     onSave({ value: amountsData })
@@ -128,7 +127,7 @@ function RecordFormPartiesDialog({
           {values
             ? values
               .map(
-                (val) => members.find((m) => m.id === val.member)?.name || 'Unknown',
+                (val) => members.find((m) => m.id === val.memberId)?.name || 'Unknown',
               )
               .join(', ')
             : 'Edit Parties'}

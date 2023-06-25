@@ -61,8 +61,8 @@ const fakeRecords: BalanceRecord[] = [
     currency: 'TWD',
     note: 'Grocery shopping for group Alpha',
     isEqualSplit: true,
-    fromMembers: [{ amount: 250, member: 'm1a2b3' }],
-    toMembers: [{ amount: 250, member: 'm4b5c6' }],
+    fromMembers: [{ amount: 250, memberId: 'm1a2b3' }],
+    toMembers: [{ amount: 250, memberId: 'm4b5c6' }],
   },
   {
     id: 'r789',
@@ -73,8 +73,8 @@ const fakeRecords: BalanceRecord[] = [
     currency: 'TWD',
     note: 'Utilities for the group Alpha house',
     isEqualSplit: false,
-    fromMembers: [{ amount: 150, member: 'm1a2b3' }],
-    toMembers: [{ amount: 100, member: 'm7c8d9' }, { amount: 50, member: 'm4b5c6' }],
+    fromMembers: [{ amount: 150, memberId: 'm1a2b3' }],
+    toMembers: [{ amount: 100, memberId: 'm7c8d9' }, { amount: 50, memberId: 'm4b5c6' }],
   },
   {
     id: 'r101',
@@ -85,8 +85,8 @@ const fakeRecords: BalanceRecord[] = [
     currency: 'TWD',
     note: 'Dinner expense for Group Alpha',
     isEqualSplit: false,
-    fromMembers: [{ amount: 100, member: 'm1a2b3' }, { amount: 100, member: 'm4b5c6' }],
-    toMembers: [{ amount: 200, member: 'm7c8d9' }],
+    fromMembers: [{ amount: 100, memberId: 'm1a2b3' }, { amount: 100, memberId: 'm4b5c6' }],
+    toMembers: [{ amount: 200, memberId: 'm7c8d9' }],
   },
 ]
 
