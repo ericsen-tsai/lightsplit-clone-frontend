@@ -19,34 +19,41 @@ import {
 } from '@/components'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/router'
+import { groupSchema } from '@/types'
 
-const formSchema = z.object({
-  groupName: z.string().min(2, {
-    message: 'Group name must be at least 2 characters.',
+const formSchema = groupSchema.omit({ id: true, owner: true }).merge(
+  z.object({
+    name: z.string().min(2, {
+      message: 'Group name must be at least 2 characters.',
+    }),
+    note: z.string().optional(),
   }),
-  publicPermission: z.union([
-    z.literal('limited'),
-    z.literal('public'),
-    z.literal('private'),
-  ]),
-  primaryCurrency: z.literal('TWD'),
-  note: z.string(),
-})
+)
 
 export type FormSchema = z.infer<typeof formSchema>
 
 type Props = {
   groupDefaultValues?: FormSchema
   isEdit?: boolean
+  handleSubmit?: (data: FormSchema) => void | Promise<void>
+  handleUpdate?: (data: FormSchema) => void | Promise<void>
+  handleDelete?: () => void
 }
 
-function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
+function GroupForm({
+  groupDefaultValues,
+  isEdit = false,
+  handleSubmit = console.log,
+  handleDelete = console.log,
+  handleUpdate = console.log,
+}: Props) {
+  const submitFunc = isEdit ? handleUpdate : handleSubmit
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: isEdit
       ? groupDefaultValues
       : {
-        groupName: '',
+        name: '',
         publicPermission: 'limited',
         primaryCurrency: 'TWD',
         note: '',
@@ -54,11 +61,8 @@ function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
   })
   const router = useRouter()
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  function onSubmit(values: FormSchema) {
+    void submitFunc(values)
   }
   return (
     <Form {...form}>
@@ -70,7 +74,7 @@ function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
       >
         <FormField
           control={form.control}
-          name="groupName"
+          name="name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Group Name</FormLabel>
@@ -144,21 +148,27 @@ function GroupForm({ groupDefaultValues, isEdit = false }: Props) {
             </FormItem>
           )}
         />
-        {isEdit && <Button type="button" variant="destructive">Delete Group</Button>}
+        {isEdit && (
+          <Button type="button" variant="destructive" onClick={handleDelete}>
+            Delete Group
+          </Button>
+        )}
         <div className="fixed bottom-10 left-1/2 flex w-[calc(100vw-4rem)] -translate-x-1/2 gap-3 sm:w-1/4">
           {isEdit && (
-          <Button
-            type="button"
-            className="flex-1"
-            variant="secondary"
-            onClick={() => {
-              void router.back()
-            }}
-          >
-            Cancel
-          </Button>
+            <Button
+              type="button"
+              className="flex-1"
+              variant="secondary"
+              onClick={() => {
+                void router.back()
+              }}
+            >
+              Cancel
+            </Button>
           )}
-          <Button type="submit" className="flex-1">{isEdit ? 'Update' : 'Submit'}</Button>
+          <Button type="submit" className="flex-1">
+            {isEdit ? 'Update' : 'Submit'}
+          </Button>
         </div>
       </form>
     </Form>

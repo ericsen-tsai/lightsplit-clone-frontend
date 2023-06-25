@@ -1,5 +1,3 @@
-import { fakeGroups } from '@/utils/fakeData'
-
 import {
   Button,
   Card,
@@ -33,17 +31,26 @@ function GroupCard(props: Group) {
   )
 }
 
-function GroupsGrid() {
+function GroupsGrid({ groups }: { groups: Group[] }) {
   const router = useRouter()
   return (
     <div className="relative grid w-full grid-cols-1 gap-3 pb-24 sm:grid-cols-3 sm:pb-0">
-      {fakeGroups.map((group) => (
+      {groups.map((group) => (
         <GroupCard {...group} key={group.id} />
       ))}
+      {groups.length === 0 && (
+        <div className="text-center">
+          <Typography variant="h4">
+            You don&apos;t have any group yet, create one!
+          </Typography>
+        </div>
+      )}
       <Button
         variant="default"
         className="fixed bottom-10 left-1/2 w-[calc(100vw-4rem)] -translate-x-1/2 sm:w-1/4"
-        onClick={() => { void router.push('/group/new') }}
+        onClick={() => {
+          void router.push('/group/new')
+        }}
       >
         Add Group
       </Button>

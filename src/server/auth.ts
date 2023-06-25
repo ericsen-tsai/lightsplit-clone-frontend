@@ -3,9 +3,13 @@ import {
   getServerSession,
   type NextAuthOptions,
   type DefaultSession,
+  type DefaultUser,
 } from 'next-auth'
+import { type DefaultJWT } from 'next-auth/jwt'
 import GoogleProvider from 'next-auth/providers/google'
+
 import { env } from '@/env.mjs'
+import { accountAPI, tokenHelper } from '@/utils/externalApi'
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -17,15 +21,28 @@ declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string
+      accessToken: string
+      userId: number
       // ...other properties
       // role: UserRole;
     } & DefaultSession['user']
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User extends DefaultUser{
+    // ...other properties
+    // role: UserRole;
+    refreshToken?: string
+    accessToken?: string
+    userId?: number
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT extends DefaultJWT {
+    accessToken?: string
+    refreshToken?: string
+    userId?: number
+  }
 }
 
 /**
@@ -40,34 +57,64 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: token.sub,
+        accessToken: token.accessToken,
+        userId: token.userId,
       },
     }),
-    signIn({
-      user: userArgs,
-    }) {
-      // here to call login/google api and append access token
-      // and refresh token to user
-      // userArgs.test = 'hello'
+    async signIn({ user: userArgs, account }) {
+      let accessToken = ''
+      let refreshToken = ''
+
+      // when super token is provided
+      if (env.EXTERNAL_API_SUPER_TOKEN) {
+        accessToken = env.EXTERNAL_API_SUPER_TOKEN
+      } else {
+        const googleLoginRes = await accountAPI.syncGoogleLogin({
+          credential: account?.id_token || '',
+        })
+        if ('error' in googleLoginRes) {
+          return false
+        }
+        accessToken = googleLoginRes.accessToken
+        refreshToken = googleLoginRes.refreshToken
+      }
+
+      const getUserRes = await accountAPI.getUser({ token: accessToken })
+      if ('error' in getUserRes) {
+        return false
+      }
+
+      // eslint-disable-next-line no-param-reassign
+      userArgs.refreshToken = refreshToken
+      // eslint-disable-next-line no-param-reassign
+      userArgs.accessToken = accessToken
+      // eslint-disable-next-line no-param-reassign
+      userArgs.userId = getUserRes.id
 
       if (userArgs) {
         return true
       }
       return false
     },
-    jwt({ token, user }) {
-      // append access token / refresh token to user
-      console.log('this is jwt')
-      console.log(user)
-      console.log('this is jwt')
+    async jwt({ token, user }) {
+      const newToken = { ...token }
 
-      // call verify token api to check if token is valid
-      // if not valid -> call refresh token api
-      // if valid -> return original token
+      if (user) {
+        newToken.accessToken = user.accessToken
+        newToken.refreshToken = user.refreshToken
+        newToken.userId = user.userId
+      }
 
-      return token
+      const { refreshToken, accessToken } = token
+
+      const { accessToken: newAccessToken } = await tokenHelper({
+        refreshToken: refreshToken || '',
+        accessToken: accessToken || '',
+      })
+
+      newToken.accessToken = newAccessToken
+      return newToken
     },
-    // in session callback, when there's no access token, raise error
-    // append access token and refresh token to session
   },
   providers: [
     GoogleProvider({
