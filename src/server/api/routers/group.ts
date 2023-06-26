@@ -23,7 +23,7 @@ export const groupRouter = createTRPCRouter({
       const token = ctx.session.user.accessToken
       const res = await groupAPI.getGroup({ token, groupId: input.groupId })
       if ('error' in res) {
-        return null
+        return {}
       }
       return res
     }),
@@ -37,7 +37,7 @@ export const groupRouter = createTRPCRouter({
       const token = ctx.session.user.accessToken
       const res = await groupAPI.createGroup({ token, groupData: input })
       if ('error' in res) {
-        return null
+        return {}
       }
       return res
     }),
@@ -54,7 +54,7 @@ export const groupRouter = createTRPCRouter({
       const { groupId, ...groupData } = input
       const res = await groupAPI.updateGroup({ token, groupData, groupId })
       if ('error' in res) {
-        return null
+        return {}
       }
       return res
     }),

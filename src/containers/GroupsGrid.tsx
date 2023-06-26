@@ -12,7 +12,10 @@ import { type Group } from '@/types'
 import { useRouter } from 'next/router'
 
 function GroupCard(props: Group) {
-  const { name, note, publicPermission } = props
+  const {
+    name, note, publicPermission, id,
+  } = props
+  console.log(id)
   return (
     <Card className="w-full min-w-[200px]">
       <CardHeader>

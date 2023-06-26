@@ -81,5 +81,5 @@ export const deleteGroup = async ({
       method: 'DELETE',
     },
   })
-  return res
+  return res || {}
 }
