@@ -29,6 +29,9 @@ const fetcher = async <ResponseSchema = Record<string, never>>({
     const resError = await response.text()
     return { error: errorMessage || resError }
   }
+  if (response.status === 204) {
+    return {} as Record<string, never> as FetcherResponse<ResponseSchema>
+  }
   return camelizeKeys(await response.json()) as ResponseSchema
 }
 
