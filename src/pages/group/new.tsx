@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { type FormSchema } from '@/containers/GroupForm'
 import { GroupForm } from '@/containers'
 import { api } from '@/utils/api'
+import { type Group } from '@/types'
 
 function GroupNew() {
   const utils = api.useContext()
@@ -22,12 +23,13 @@ function GroupNew() {
       console.error('something is wrong')
       return
     }
-    await createGroup.mutateAsync({ ...data, owner: session?.user.userId })
-    void router.push('/')
+    const d = (await createGroup.mutateAsync({
+      ...data,
+      owner: session?.user.userId,
+    })) as Awaited<Promise<Group>>
+    void router.push(`/group/${d.id}/member`)
   }
-  return (
-    <GroupForm handleSubmit={handleSubmit} />
-  )
+  return <GroupForm handleSubmit={handleSubmit} />
 }
 
 export default GroupNew
