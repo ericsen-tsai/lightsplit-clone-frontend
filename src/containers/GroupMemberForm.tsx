@@ -18,6 +18,7 @@ import {
   Input,
 } from '@/components'
 import { useRouter } from 'next/router'
+import { type Member } from '@/types'
 
 const formSchema = z.object({
   member: z.array(
@@ -26,6 +27,7 @@ const formSchema = z.object({
         message: 'Name must be at least 2 characters.',
       }),
       permission: z.union([z.literal('view'), z.literal('edit')]),
+      id: z.string().optional(),
     }),
   ),
 })
@@ -34,29 +36,45 @@ export type FormSchema = z.infer<typeof formSchema>
 
 type Props = {
   isEdit?: boolean
-  memberDefaultValues?: FormSchema['member']
+  members?: Member[]
+  handleUpdate: (
+    members: { name: string, permission: 'edit' | 'view', id?: string }[]
+  ) => Promise<void>
 }
 
-function GroupMemberForm({ isEdit = false, memberDefaultValues = [] }: Props) {
+function GroupMemberForm({
+  isEdit = false,
+  members = [],
+  handleUpdate,
+}: Props) {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      member: isEdit ? memberDefaultValues : [],
+      member: isEdit
+        ? members.map((member) => ({
+          name: member.name,
+          permission: member.permission,
+          id: member.id,
+        }))
+        : [],
     },
   })
 
+  const unDeletableMembers = members
+    .filter((member) => !!member.primaryBalance)
+    .map((member) => member.id)
+
+  const watchMembers = form.watch('member')
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: 'member' as never,
+    name: 'member',
   })
 
   const router = useRouter()
 
-  // 2. Define a submit handler.
   function onSubmit(values: FormSchema) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+    void handleUpdate(values.member)
   }
   return (
     <Form {...form}>
@@ -130,6 +148,10 @@ function GroupMemberForm({ isEdit = false, memberDefaultValues = [] }: Props) {
                 variant="destructive"
                 type="button"
                 onClick={() => remove(index)}
+                disabled={
+                  !!watchMembers[index]?.id
+                  && unDeletableMembers.includes((watchMembers[index]?.id as string))
+                }
               >
                 Delete
               </Button>
