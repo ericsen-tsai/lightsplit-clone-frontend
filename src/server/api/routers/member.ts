@@ -14,9 +14,6 @@ export const memberRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const token = ctx.session.user.accessToken
       const res = await memberAPI.getMembers({ token, groupId: input.groupId })
-      if ('error' in res) {
-        return []
-      }
       return res
     }),
   updateMembers: protectedProcedure

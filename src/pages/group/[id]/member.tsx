@@ -71,19 +71,27 @@ const createUpdateUsersPayload = ({
 }
 
 function GroupMember() {
+  const utils = api.useContext()
   const router = useRouter()
   const groupId = router.query.id as string
   const members = api.member.getMembers.useQuery({
     groupId,
   })
-  const updateMembers = api.member.updateMembers.useMutation()
-  console.log(members.data)
+  const updateMembers = api.member.updateMembers.useMutation({
+    onSuccess: () => {
+      void utils.member.getMembers.invalidate({ groupId })
+    },
+    onError: (res) => {
+      console.error(res)
+    },
+  })
+  const membersData = (members.data && !('error' in members.data)) ? members.data : []
 
   const handleUpdate = async (
     newMembers: { name: string, permission: 'edit' | 'view', id?: string }[],
   ) => {
     const updateUsersPayload = createUpdateUsersPayload({
-      previousMembers: members.data || [],
+      previousMembers: membersData,
       currentMembers: newMembers,
     })
 
@@ -99,7 +107,7 @@ function GroupMember() {
     <GroupMemberForm
       isEdit={Boolean(router.query.isEdit)}
       handleUpdate={handleUpdate}
-      members={members.data}
+      members={membersData}
     />
   )
 }

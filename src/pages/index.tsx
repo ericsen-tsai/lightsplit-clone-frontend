@@ -47,7 +47,7 @@ function Home() {
       </Head>
       <main className="flex w-full flex-col items-center justify-center">
         {session ? (
-          <GroupsGrid groups={groupsData.data || []} />
+          <GroupsGrid groups={(groupsData.data && !('error' in groupsData.data)) ? groupsData.data : []} />
         ) : (
           <div className="mt-[40vh] flex flex-col items-center justify-center">
             <Button

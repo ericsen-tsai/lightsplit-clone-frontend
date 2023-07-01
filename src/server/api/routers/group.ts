@@ -8,9 +8,6 @@ export const groupRouter = createTRPCRouter({
   getGroups: protectedProcedure.query(async ({ ctx }) => {
     const token = ctx.session.user.accessToken
     const res = await groupAPI.getGroups({ token })
-    if ('error' in res) {
-      return []
-    }
     return res
   }),
   getGroup: protectedProcedure
@@ -22,9 +19,6 @@ export const groupRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const token = ctx.session.user.accessToken
       const res = await groupAPI.getGroup({ token, groupId: input.groupId })
-      if ('error' in res) {
-        return {}
-      }
       return res
     }),
   createGroup: protectedProcedure
@@ -36,9 +30,6 @@ export const groupRouter = createTRPCRouter({
     .mutation(async ({ input, ctx }) => {
       const token = ctx.session.user.accessToken
       const res = await groupAPI.createGroup({ token, groupData: input })
-      if ('error' in res) {
-        return {}
-      }
       return res
     }),
   updateGroup: protectedProcedure
@@ -53,9 +44,6 @@ export const groupRouter = createTRPCRouter({
       const token = ctx.session.user.accessToken
       const { groupId, ...groupData } = input
       const res = await groupAPI.updateGroup({ token, groupData, groupId })
-      if ('error' in res) {
-        return {}
-      }
       return res
     }),
   deleteGroup: protectedProcedure

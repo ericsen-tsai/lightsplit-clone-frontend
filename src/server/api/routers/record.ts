@@ -14,9 +14,6 @@ export const recordRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const token = ctx.session.user.accessToken
       const res = await recordAPI.getRecords({ token, groupId: input.groupId })
-      if ('error' in res) {
-        return []
-      }
       return res
     }),
   getRecord: protectedProcedure
@@ -33,9 +30,6 @@ export const recordRouter = createTRPCRouter({
         groupId: input.groupId,
         recordId: input.recordId,
       })
-      if ('error' in res) {
-        return {}
-      }
       return res
     }),
   createRecord: protectedProcedure
@@ -54,9 +48,6 @@ export const recordRouter = createTRPCRouter({
         recordData: input.recordData,
         groupId: input.groupId,
       })
-      if ('error' in res) {
-        return {}
-      }
       return res
     }),
   updateRecord: protectedProcedure
@@ -75,9 +66,6 @@ export const recordRouter = createTRPCRouter({
       const res = await recordAPI.updateRecord({
         token, recordData, recordId, groupId,
       })
-      if ('error' in res) {
-        return {}
-      }
       return res
     }),
   deleteRecord: protectedProcedure

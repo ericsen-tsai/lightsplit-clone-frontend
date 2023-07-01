@@ -35,7 +35,7 @@ function GroupEdit() {
   const { data: session } = useSession()
   const router = useRouter()
   const groupId = router.query.id as string
-  const groupData = api.group.getGroup.useQuery({ groupId })
+  const group = api.group.getGroup.useQuery({ groupId })
 
   const updateGroup = api.group.updateGroup.useMutation({
     onSuccess: () => {
@@ -67,12 +67,12 @@ function GroupEdit() {
     <GroupForm
       isEdit
       groupDefaultValues={
-        groupData.data
+        (group.data && !('error' in (group.data)))
           ? {
-            note: groupData.data.note,
-            name: groupData.data.name,
-            primaryCurrency: groupData.data.primaryCurrency,
-            publicPermission: groupData.data.publicPermission,
+            note: group.data.note,
+            name: group.data.name,
+            primaryCurrency: group?.data.primaryCurrency,
+            publicPermission: group?.data.publicPermission,
           }
           : undefined
       }
