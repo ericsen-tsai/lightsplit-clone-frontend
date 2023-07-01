@@ -10,11 +10,17 @@ import {
   TabsTrigger,
 } from '@/components'
 
-import { fakeMembers, fakeRecords } from '@/utils/fakeData'
+import { type Member, type BalanceRecord } from '@/types'
 import BalanceRow from './BalanceRow'
 import RecordRows from './RecordRows'
 
-function GroupDashboardTabs() {
+type Props = {
+  members: Member[]
+  records: BalanceRecord[]
+  yourMemberId: string
+}
+
+function GroupDashboardTabs({ members, records, yourMemberId }: Props) {
   return (
     <Tabs defaultValue="records" className="w-full">
       <TabsList className="grid w-full grid-cols-2">
@@ -30,7 +36,7 @@ function GroupDashboardTabs() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <RecordRows members={fakeMembers} records={fakeRecords} yourMemberId="m1a2b3" />
+            <RecordRows members={members} records={records} yourMemberId={yourMemberId} />
           </CardContent>
         </Card>
       </TabsContent>
@@ -43,12 +49,12 @@ function GroupDashboardTabs() {
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
-            {fakeMembers.map((member) => (
+            {members.map((member) => (
               <BalanceRow
                 username={member.name}
                 balance={member.primaryBalance}
                 maxBalance={Math.max(
-                  ...fakeMembers.map((m) => Math.abs(m.primaryBalance)),
+                  ...members.map((m) => Math.abs(m.primaryBalance)),
                 )}
                 key={member.name}
               />

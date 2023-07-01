@@ -11,12 +11,53 @@ import {
 import { useRouter } from 'next/router'
 
 import { GroupDashboardTabs } from '@/containers'
+import { type GetServerSidePropsContext } from 'next'
+import superjson from 'superjson'
+import { authOptions } from '@/server/auth'
+import { getServerSession } from 'next-auth'
+import { appRouter } from '@/server/api/root'
+import { createServerSideHelpers } from '@trpc/react-query/server'
+import { createInnerTRPCContext } from '@/server/api/trpc'
+import { api } from '@/utils/api'
+import { useSession } from 'next-auth/react'
 
 const groupName = 'This is for test'
 const note = 'This is your note'
 
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  const groupId = context.params?.id as string
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: createInnerTRPCContext({ session }),
+    transformer: superjson,
+  })
+
+  await helpers.member.getMembers.prefetch({ groupId })
+  await helpers.record.getRecords.prefetch({ groupId })
+
+  return {
+    props: {
+      session,
+      trpcState: helpers?.dehydrate(),
+    },
+  }
+}
+
 function Group() {
   const router = useRouter()
+  const groupId = router.query.id as string
+  const { data: session } = useSession()
+  const members = api.member.getMembers.useQuery({
+    groupId,
+  })
+  const records = api.record.getRecords.useQuery({
+    groupId,
+  })
+
+  const membersData = (members.data && !('error' in members.data)) ? members.data : []
+  const recordsData = (records.data && !('error' in records.data)) ? records.data : []
+  const yourMemberId = membersData.find((m) => m.userId === session?.user.userId)?.id || ''
 
   return (
     <div className="container relative flex max-w-[50rem] flex-col pb-20">
@@ -53,7 +94,7 @@ function Group() {
         {note}
       </Typography>
       <SelectSeparator className="mt-5 bg-primary/20" />
-      <GroupDashboardTabs />
+      <GroupDashboardTabs members={membersData} records={recordsData} yourMemberId={yourMemberId} />
       <SelectSeparator className="mt-5 bg-primary/20" />
       <div className="fixed bottom-10 left-1/2 flex w-[calc(100vw-8rem)] -translate-x-1/2 justify-center gap-3 sm:w-full">
         <Button

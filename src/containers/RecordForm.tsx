@@ -32,29 +32,29 @@ const formSchema = z.object({
   amount: z.number().min(0, {
     message: 'Are you sure you did not lose money?',
   }),
-  paidBy: z.array(
+  fromMembers: z.array(
     z.object({
       memberId: z.string(),
       amount: z.number(),
     }),
   ),
-  forWhom: z.array(
+  toMembers: z.array(
     z.object({
       memberId: z.string(),
       amount: z.number(),
     }),
   ),
-  note: z.string(),
+  note: z.string().optional(),
 })
 
 export type FormSchema = z.infer<typeof formSchema>
 
 type RecordFormPartiesDialogProps = {
-  values?: FormSchema['paidBy'] | FormSchema['forWhom']
+  values?: FormSchema['fromMembers'] | FormSchema['toMembers']
   onSave: ({
     value,
   }: {
-    value: FormSchema['paidBy'] | FormSchema['forWhom']
+    value: FormSchema['fromMembers'] | FormSchema['toMembers']
   }) => void
   members: Member[]
   amount: number
@@ -115,7 +115,7 @@ function RecordFormPartiesDialog({
       if (m.isInvolved) {
         memberLeft -= 1
       }
-      const trulyAmount = memberLeft === 0 ? (amount - equal * (involvedMembers - 1)) : equal
+      const trulyAmount = memberLeft === 0 ? amount - equal * (involvedMembers - 1) : equal
       return { ...m, amount: m.isInvolved ? trulyAmount : 0 }
     }))
   }
@@ -127,7 +127,8 @@ function RecordFormPartiesDialog({
           {values
             ? values
               .map(
-                (val) => members.find((m) => m.id === val.memberId)?.name || 'Unknown',
+                (val) => members.find((m) => m.id === val.memberId)?.name
+                    || 'Unknown',
               )
               .join(', ')
             : 'Edit Parties'}
@@ -231,9 +232,19 @@ type Props = {
   recordDefaultValues?: FormSchema
   isEdit?: boolean
   members: Member[]
+  handleSubmit?: (data: FormSchema) => void | Promise<void>
+  handleUpdate?: (data: FormSchema) => void | Promise<void>
+  handleDelete?: () => void | Promise<void>
 }
 
-function RecordForm({ recordDefaultValues, isEdit = false, members }: Props) {
+function RecordForm({
+  recordDefaultValues,
+  isEdit = false,
+  members,
+  handleSubmit = console.log,
+  handleUpdate = console.log,
+  handleDelete = console.log,
+}: Props) {
   const router = useRouter()
   const [paidByDialogOpen, setPaidByDialogOpen] = useState(false)
   const [forWhomDialogOpen, setForWhomByDialogOpen] = useState(false)
@@ -245,25 +256,19 @@ function RecordForm({ recordDefaultValues, isEdit = false, members }: Props) {
       : {
         what: '',
         amount: 0,
-        paidBy: [],
-        forWhom: [],
+        fromMembers: [],
+        toMembers: [],
         note: '',
       },
   })
 
   const watchAmount = form.watch('amount')
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-  }
   return (
     <Form {...form}>
       <form
         onSubmit={(...args) => {
-          void form.handleSubmit(onSubmit)(...args)
+          void form.handleSubmit(isEdit ? handleUpdate : handleSubmit)(...args)
         }}
         className="relative space-y-8 pb-24"
       >
@@ -300,10 +305,10 @@ function RecordForm({ recordDefaultValues, isEdit = false, members }: Props) {
               open={paidByDialogOpen}
               onOpenChange={setPaidByDialogOpen}
               amount={+watchAmount || 0}
-              values={form.getValues('paidBy')}
+              values={form.getValues('fromMembers')}
               members={members}
               onSave={({ value }) => {
-                void form.setValue('paidBy', value)
+                void form.setValue('fromMembers', value)
               }}
               dialogTitle="Paid By?"
             />
@@ -316,10 +321,10 @@ function RecordForm({ recordDefaultValues, isEdit = false, members }: Props) {
               open={forWhomDialogOpen}
               onOpenChange={setForWhomByDialogOpen}
               amount={+watchAmount || 0}
-              values={form.getValues('forWhom')}
+              values={form.getValues('toMembers')}
               members={members}
               onSave={({ value }) => {
-                void form.setValue('forWhom', value)
+                void form.setValue('toMembers', value)
               }}
               dialogTitle="For Whom?"
             />
@@ -340,7 +345,7 @@ function RecordForm({ recordDefaultValues, isEdit = false, members }: Props) {
           )}
         />
         {isEdit && (
-          <Button type="button" variant="destructive">
+          <Button type="button" variant="destructive" onClick={() => { void handleDelete() }}>
             Delete
           </Button>
         )}
