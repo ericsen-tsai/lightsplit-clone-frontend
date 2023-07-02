@@ -15,12 +15,12 @@ function RecordNew() {
     },
   })
 
-  const handleSubmit = async (rd: FormSchema) => {
+  const handleCreate = async (rd: FormSchema) => {
     await createRecord.mutateAsync({
       recordData: {
         ...rd,
         type: 'expense',
-        group: groupId,
+        groupId,
         currency: 'TWD',
       },
       groupId,
@@ -28,7 +28,7 @@ function RecordNew() {
     void router.push(`/group/${groupId}`)
   }
 
-  return <RecordForm members={fakeMembers} handleSubmit={handleSubmit} />
+  return <RecordForm members={fakeMembers} handleCreate={handleCreate} />
 }
 
 export default RecordNew

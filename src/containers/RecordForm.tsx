@@ -232,7 +232,7 @@ type Props = {
   recordDefaultValues?: FormSchema
   isEdit?: boolean
   members: Member[]
-  handleSubmit?: (data: FormSchema) => void | Promise<void>
+  handleCreate?: (data: FormSchema) => void | Promise<void>
   handleUpdate?: (data: FormSchema) => void | Promise<void>
   handleDelete?: () => void | Promise<void>
 }
@@ -241,7 +241,7 @@ function RecordForm({
   recordDefaultValues,
   isEdit = false,
   members,
-  handleSubmit = console.log,
+  handleCreate = console.log,
   handleUpdate = console.log,
   handleDelete = console.log,
 }: Props) {
@@ -268,7 +268,7 @@ function RecordForm({
     <Form {...form}>
       <form
         onSubmit={(...args) => {
-          void form.handleSubmit(isEdit ? handleUpdate : handleSubmit)(...args)
+          void form.handleSubmit(isEdit ? handleUpdate : handleCreate)(...args)
         }}
         className="relative space-y-8 pb-24"
       >

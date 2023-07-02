@@ -18,7 +18,7 @@ function GroupNew() {
       console.error(res)
     },
   })
-  const handleSubmit = async (data: FormSchema) => {
+  const handleCreate = async (data: FormSchema) => {
     if (!session?.user.userId) {
       console.error('something is wrong')
       return
@@ -29,7 +29,7 @@ function GroupNew() {
     })) as Awaited<Promise<Group>>
     void router.push(`/group/${d.id}/member`)
   }
-  return <GroupForm handleSubmit={handleSubmit} />
+  return <GroupForm handleCreate={handleCreate} />
 }
 
 export default GroupNew

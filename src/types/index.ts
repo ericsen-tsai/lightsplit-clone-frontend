@@ -17,7 +17,7 @@ export type Group = z.infer<typeof groupSchema>
 
 export const balanceRecordSchema = z.object({
   id: z.string(),
-  group: z.string(),
+  groupId: z.string(),
   what: z.string(),
   amount: z.number(),
   type: z.union([

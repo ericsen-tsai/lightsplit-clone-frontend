@@ -35,7 +35,7 @@ export type FormSchema = z.infer<typeof formSchema>
 type Props = {
   groupDefaultValues?: FormSchema
   isEdit?: boolean
-  handleSubmit?: (data: FormSchema) => void | Promise<void>
+  handleCreate?: (data: FormSchema) => void | Promise<void>
   handleUpdate?: (data: FormSchema) => void | Promise<void>
   handleDelete?: () => void
 }
@@ -43,11 +43,11 @@ type Props = {
 function GroupForm({
   groupDefaultValues,
   isEdit = false,
-  handleSubmit = console.log,
+  handleCreate = console.log,
   handleDelete = console.log,
   handleUpdate = console.log,
 }: Props) {
-  const submitFunc = isEdit ? handleUpdate : handleSubmit
+  const submitFunc = isEdit ? handleUpdate : handleCreate
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: isEdit

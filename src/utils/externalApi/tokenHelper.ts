@@ -12,11 +12,11 @@ const tokenHelper = async ({
     return { accessToken, refreshToken }
   }
   const refreshAccessTokenRes = await refreshAccessToken({ refreshToken })
-  if ('error' in refreshAccessTokenRes) {
-    return { accessToken: '', refreshToken }
+  if (!('error' in refreshAccessTokenRes)) {
+    return { accessToken: refreshAccessTokenRes.accessToken, refreshToken }
   }
 
-  return { accessToken: refreshAccessTokenRes.accessToken, refreshToken }
+  return { accessToken: '', refreshToken }
 }
 
 export default tokenHelper

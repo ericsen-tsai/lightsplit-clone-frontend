@@ -60,7 +60,7 @@ function RecordUpdate() {
       groupId,
       recordId,
       recordData: {
-        ...rd, type: 'expense', currency: 'TWD', group: groupId,
+        ...rd, type: 'expense', currency: 'TWD', groupId,
       },
     })
     void router.push(`/group/${groupId}`)
