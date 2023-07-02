@@ -10,6 +10,7 @@ import superjson from 'superjson'
 import { api } from '@/utils/api'
 
 import { type FormSchema } from '@/containers/RecordForm'
+import { useToast } from '@/components'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions)
@@ -32,6 +33,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 function RecordUpdate() {
+  const { toast } = useToast()
   const router = useRouter()
   const utils = api.useContext()
   const groupId = router.query.id as string
@@ -44,14 +46,14 @@ function RecordUpdate() {
   const membersData = (members.data && !('error' in members.data)) ? members.data : []
 
   const updateRecord = api.record.updateRecord.useMutation({
-    onSuccess: () => {
-      void utils.record.getRecord.invalidate({ groupId, recordId })
+    onSuccess: async () => {
+      await utils.record.getRecord.invalidate({ groupId, recordId })
     },
   })
 
   const deleteRecord = api.record.deleteRecord.useMutation({
-    onSuccess: () => {
-      void utils.record.getRecords.invalidate({ groupId })
+    onSuccess: async () => {
+      await utils.record.getRecords.invalidate({ groupId })
     },
   })
 
@@ -64,11 +66,17 @@ function RecordUpdate() {
       },
     })
     void router.push(`/group/${groupId}`)
+    toast({
+      description: 'Record updated successfully!',
+    })
   }
 
   const handleDelete = async () => {
     await deleteRecord.mutateAsync({ groupId, recordId })
     void router.push(`/group/${groupId}`)
+    toast({
+      description: 'Record deleted successfully!',
+    })
   }
 
   return (

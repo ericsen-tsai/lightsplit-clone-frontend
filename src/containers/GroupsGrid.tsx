@@ -16,6 +16,7 @@ function GroupCard(props: Group) {
     name, note, publicPermission, id,
   } = props
   console.log(id)
+  const router = useRouter()
   return (
     <Card className="w-full min-w-[200px]">
       <CardHeader>
@@ -28,7 +29,13 @@ function GroupCard(props: Group) {
         </Typography>
       </CardContent>
       <CardFooter className="flex justify-end">
-        <Button>Details</Button>
+        <Button
+          onClick={() => {
+            void router.push(`/group/${id}`)
+          }}
+        >
+          Details
+        </Button>
       </CardFooter>
     </Card>
   )
@@ -55,7 +62,7 @@ function GroupsGrid({ groups }: { groups: Group[] }) {
           void router.push('/group/new')
         }}
       >
-        Add Group
+        Create Group
       </Button>
     </div>
   )

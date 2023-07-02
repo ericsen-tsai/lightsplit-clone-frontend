@@ -12,6 +12,7 @@ import { api } from '@/utils/api'
 
 import { type UpdateMembersPayload } from '@/utils/externalApi/member'
 import { type Member } from '@/types'
+import { useToast } from '@/components'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions)
@@ -71,6 +72,7 @@ const createUpdateUsersPayload = ({
 }
 
 function GroupMember() {
+  const { toast } = useToast()
   const utils = api.useContext()
   const router = useRouter()
   const groupId = router.query.id as string
@@ -78,8 +80,8 @@ function GroupMember() {
     groupId,
   })
   const updateMembers = api.member.updateMembers.useMutation({
-    onSuccess: () => {
-      void utils.member.getMembers.invalidate({ groupId })
+    onSuccess: async () => {
+      await utils.member.getMembers.invalidate({ groupId })
     },
     onError: (res) => {
       console.error(res)
@@ -101,6 +103,9 @@ function GroupMember() {
     })
 
     void router.push(`/group/${groupId}`)
+    toast({
+      description: 'Members updated successfully!',
+    })
   }
 
   return (

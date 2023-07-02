@@ -5,14 +5,16 @@ import { type FormSchema } from '@/containers/GroupForm'
 import { GroupForm } from '@/containers'
 import { api } from '@/utils/api'
 import { type Group } from '@/types'
+import { useToast } from '@/components'
 
 function GroupNew() {
   const utils = api.useContext()
+  const { toast } = useToast()
   const { data: session } = useSession()
   const router = useRouter()
   const createGroup = api.group.createGroup.useMutation({
-    onSuccess: () => {
-      void utils.group.getGroups.invalidate()
+    onSuccess: async () => {
+      await utils.group.getGroups.invalidate()
     },
     onError: (res) => {
       console.error(res)
@@ -28,6 +30,9 @@ function GroupNew() {
       owner: session?.user.userId,
     })) as Awaited<Promise<Group>>
     void router.push(`/group/${d.id}/member`)
+    toast({
+      description: 'Group created successfully!',
+    })
   }
   return <GroupForm handleCreate={handleCreate} />
 }

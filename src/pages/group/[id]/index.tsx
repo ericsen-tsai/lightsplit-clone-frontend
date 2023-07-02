@@ -21,9 +21,6 @@ import { createInnerTRPCContext } from '@/server/api/trpc'
 import { api } from '@/utils/api'
 import { useSession } from 'next-auth/react'
 
-const groupName = 'This is for test'
-const note = 'This is your note'
-
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions)
   const groupId = context.params?.id as string
@@ -33,6 +30,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     transformer: superjson,
   })
 
+  await helpers.group.getGroup.prefetch({ groupId })
   await helpers.member.getMembers.prefetch({ groupId })
   await helpers.record.getRecords.prefetch({ groupId })
 
@@ -48,6 +46,9 @@ function Group() {
   const router = useRouter()
   const groupId = router.query.id as string
   const { data: session } = useSession()
+  const group = api.group.getGroup.useQuery({
+    groupId,
+  })
   const members = api.member.getMembers.useQuery({
     groupId,
   })
@@ -55,6 +56,7 @@ function Group() {
     groupId,
   })
 
+  const groupData = (group.data && !('error' in group.data)) ? group.data : undefined
   const membersData = (members.data && !('error' in members.data)) ? members.data : []
   const recordsData = (records.data && !('error' in records.data)) ? records.data : []
   const yourMemberId = membersData.find((m) => m.userId === session?.user.userId)?.id || ''
@@ -62,7 +64,7 @@ function Group() {
   return (
     <div className="container relative flex max-w-[50rem] flex-col pb-20">
       <div className="flex items-center justify-between">
-        <Typography variant="h3">{groupName}</Typography>
+        <Typography variant="h3">{groupData?.name || ''}</Typography>
         <DropdownMenu>
           <DropdownMenuTrigger className="flex items-center gap-1">
             <Settings />
@@ -91,7 +93,7 @@ function Group() {
         </DropdownMenu>
       </div>
       <Typography variant="h4" className="mt-4 text-primary/50">
-        {note}
+        {groupData?.note || ''}
       </Typography>
       <SelectSeparator className="mt-5 bg-primary/20" />
       <GroupDashboardTabs members={membersData} records={recordsData} yourMemberId={yourMemberId} />

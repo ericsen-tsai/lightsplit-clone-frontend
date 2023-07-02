@@ -11,6 +11,7 @@ import { appRouter } from '@/server/api/root'
 import { authOptions } from '@/pages/api/auth/[...nextauth]'
 import { api } from '@/utils/api'
 import { useRouter } from 'next/router'
+import { useToast } from '@/components'
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getServerSession(context.req, context.res, authOptions)
@@ -31,6 +32,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 function GroupEdit() {
+  const { toast } = useToast()
   const utils = api.useContext()
   const { data: session } = useSession()
   const router = useRouter()
@@ -38,14 +40,14 @@ function GroupEdit() {
   const group = api.group.getGroup.useQuery({ groupId })
 
   const updateGroup = api.group.updateGroup.useMutation({
-    onSuccess: () => {
-      void utils.group.getGroup.invalidate({ groupId })
+    onSuccess: async () => {
+      await utils.group.getGroup.invalidate({ groupId })
     },
   })
 
   const deleteGroup = api.group.deleteGroup.useMutation({
-    onSuccess: () => {
-      void utils.group.getGroups.invalidate()
+    onSuccess: async () => {
+      await utils.group.getGroups.invalidate()
     },
   })
 
@@ -56,11 +58,17 @@ function GroupEdit() {
     }
     await updateGroup.mutateAsync({ ...data, owner: session?.user.userId, groupId })
     void router.push(`/group/${groupId}`)
+    toast({
+      description: 'Group updated successfully!',
+    })
   }
 
   const handleDelete = () => {
     deleteGroup.mutate({ groupId })
     void router.push('/')
+    toast({
+      description: 'Group deleted successfully!',
+    })
   }
 
   return (
