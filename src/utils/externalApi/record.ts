@@ -3,7 +3,7 @@ import fetcher from './fetcher'
 
 export const getRecords = async ({ token, groupId }: { token: string, groupId: string }) => {
   const res = await fetcher<BalanceRecord[]>({
-    endpoint: `/groups/${groupId}/record`,
+    endpoint: `/group/${groupId}/record`,
     token,
     options: {
       method: 'GET',
@@ -22,7 +22,7 @@ export const getRecord = async ({
   recordId: string
 }) => {
   const res = await fetcher<BalanceRecord>({
-    endpoint: `/groups/${groupId}/record/${recordId}`,
+    endpoint: `/group/${groupId}/record/${recordId}`,
     token,
     options: {
       method: 'GET',
@@ -41,7 +41,7 @@ export const createRecord = async ({
   recordData: Omit<BalanceRecord, 'id'>
 }) => {
   const res = await fetcher<BalanceRecord>({
-    endpoint: `/groups/${groupId}/record`,
+    endpoint: `/group/${groupId}/record`,
     token,
     data: recordData,
     options: {
@@ -63,7 +63,7 @@ export const updateRecord = async ({
   recordData: Omit<BalanceRecord, 'id'>
 }) => {
   const res = await fetcher<BalanceRecord>({
-    endpoint: `/groups/${groupId}/record/${recordId}`,
+    endpoint: `/group/${groupId}/record/${recordId}`,
     token,
     data: recordData,
     options: {
@@ -82,12 +82,16 @@ export const deleteRecord = async ({
   groupId: string
   recordId: string
 }) => {
-  const res = await fetcher<null>({
-    endpoint: `group/${groupId}/record/${recordId}`,
-    token,
-    options: {
-      method: 'DELETE',
-    },
-  })
-  return res || {}
+  try {
+    const res = await fetcher<null>({
+      endpoint: `/group/${groupId}/record/${recordId}`,
+      token,
+      options: {
+        method: 'DELETE',
+      },
+    })
+    return res || {}
+  } catch (error) {
+    return {}
+  }
 }

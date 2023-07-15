@@ -22,6 +22,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     transformer: superjson,
   })
 
+  await helpers.group.getGroup.prefetch({
+    groupId: (context?.params?.id || '') as string,
+  })
+
   await helpers.member.getMembers.prefetch({
     groupId: (context?.params?.id || '') as string,
   })
@@ -76,6 +80,10 @@ function GroupMember() {
   const utils = api.useContext()
   const router = useRouter()
   const groupId = router.query.id as string
+
+  const group = api.group.getGroup.useQuery({
+    groupId,
+  })
   const members = api.member.getMembers.useQuery({
     groupId,
   })
@@ -87,6 +95,7 @@ function GroupMember() {
       console.error(res)
     },
   })
+  const groupData = (group.data && !('error' in group.data)) ? group.data : null
   const membersData = (members.data && !('error' in members.data)) ? members.data : []
 
   const handleUpdate = async (
@@ -112,7 +121,7 @@ function GroupMember() {
     <GroupMemberForm
       isEdit={Boolean(router.query.isEdit)}
       handleUpdate={handleUpdate}
-      members={membersData}
+      members={membersData.filter((member) => member.userId !== groupData?.owner)}
     />
   )
 }

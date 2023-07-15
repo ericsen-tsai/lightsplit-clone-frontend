@@ -61,7 +61,9 @@ function GroupMemberForm({
   })
 
   const unDeletableMembers = members
-    .filter((member) => !!member.primaryBalance)
+    .filter(
+      (member) => !!member.balances.filter((b) => b.memberId === member.id).length,
+    )
     .map((member) => member.id)
 
   const watchMembers = form.watch('member')
@@ -150,7 +152,7 @@ function GroupMemberForm({
                 onClick={() => remove(index)}
                 disabled={
                   !!watchMembers[index]?.id
-                  && unDeletableMembers.includes((watchMembers[index]?.id as string))
+                  && unDeletableMembers.includes(watchMembers[index]?.id as string)
                 }
               >
                 Delete

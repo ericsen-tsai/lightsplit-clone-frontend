@@ -34,6 +34,7 @@ const fakeMembers: Member[] = [
     name: 'Ericsen Tsai',
     permission: 'edit',
     primaryBalance: 500, // Grocery: +250, Utilities: +150, Dinner: +100
+    balances: [],
   },
   {
     id: 'm4b5c6',
@@ -41,6 +42,7 @@ const fakeMembers: Member[] = [
     name: 'Jane Smith',
     permission: 'view',
     primaryBalance: -200, // Grocery: -250, Utilities: -50, Dinner: +100
+    balances: [],
   },
   {
     id: 'm7c8d9',
@@ -48,13 +50,14 @@ const fakeMembers: Member[] = [
     name: 'Alice Johnson',
     permission: 'edit',
     primaryBalance: -300, // Utilities: -100, Dinner: -200
+    balances: [],
   },
 ]
 
 const fakeRecords: BalanceRecord[] = [
   {
     id: 'r123',
-    group: '1abc23de4',
+    groupId: '1abc23de4',
     what: 'Grocery',
     amount: 250,
     type: 'expense',
@@ -62,11 +65,11 @@ const fakeRecords: BalanceRecord[] = [
     note: 'Grocery shopping for group Alpha',
     isEqualSplit: true,
     fromMembers: [{ amount: 250, memberId: 'm1a2b3' }],
-    toMembers: [{ amount: 250, memberId: 'm4b5c6' }],
+    toMembers: [{ amount: -250, memberId: 'm4b5c6' }],
   },
   {
     id: 'r789',
-    group: '1abc23de4',
+    groupId: '1abc23de4',
     what: 'Utilities',
     amount: 150,
     type: 'expense',
@@ -74,11 +77,11 @@ const fakeRecords: BalanceRecord[] = [
     note: 'Utilities for the group Alpha house',
     isEqualSplit: false,
     fromMembers: [{ amount: 150, memberId: 'm1a2b3' }],
-    toMembers: [{ amount: 100, memberId: 'm7c8d9' }, { amount: 50, memberId: 'm4b5c6' }],
+    toMembers: [{ amount: -100, memberId: 'm7c8d9' }, { amount: -50, memberId: 'm4b5c6' }],
   },
   {
     id: 'r101',
-    group: '1abc23de4',
+    groupId: '1abc23de4',
     what: 'Dinner',
     amount: 200,
     type: 'expense',
@@ -86,7 +89,7 @@ const fakeRecords: BalanceRecord[] = [
     note: 'Dinner expense for Group Alpha',
     isEqualSplit: false,
     fromMembers: [{ amount: 100, memberId: 'm1a2b3' }, { amount: 100, memberId: 'm4b5c6' }],
-    toMembers: [{ amount: 200, memberId: 'm7c8d9' }],
+    toMembers: [{ amount: -200, memberId: 'm7c8d9' }],
   },
 ]
 

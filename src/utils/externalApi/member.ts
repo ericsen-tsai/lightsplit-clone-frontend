@@ -14,8 +14,10 @@ export const getMembers = async ({ token, groupId }: { token: string, groupId: s
 }
 
 export const updateMembersPayloadSchema = z.object({
-  create: z.array(memberSchema.omit({ userId: true, id: true, primaryBalance: true })),
-  update: z.array(memberSchema.omit({ userId: true, primaryBalance: true })),
+  create: z.array(memberSchema.omit({
+    userId: true, id: true, primaryBalance: true, balances: true,
+  })),
+  update: z.array(memberSchema.omit({ userId: true, primaryBalance: true, balances: true })),
   delete: z.array(memberSchema.pick({ id: true })),
 })
 

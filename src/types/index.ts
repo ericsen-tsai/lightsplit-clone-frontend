@@ -51,6 +51,11 @@ export const memberSchema = z.object({
   name: z.string(),
   permission: z.union([z.literal('edit'), z.literal('view')]),
   primaryBalance: z.number(),
+  balances: z.array(z.object({
+    balance: z.number(),
+    memberId: z.string(),
+    currency: z.string(),
+  })),
 })
 
 export type Member = z.infer<typeof memberSchema>

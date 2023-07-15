@@ -39,7 +39,7 @@ const formSchema = z.object({
   what: z.string().min(2, {
     message: 'Item name must be at least 2 characters.',
   }),
-  amount: z.number().min(0, {
+  amount: z.coerce.number().min(0, {
     message: 'Are you sure you did not lose money?',
   }),
   fromMembers: z.array(
@@ -148,18 +148,17 @@ function RecordFormPartiesDialog({
         <DialogHeader>
           <DialogTitle>{dialogTitle}</DialogTitle>
         </DialogHeader>
-        <div className="relative flex flex-col items-center">
+        <div className="flex items-center justify-between">
           <Typography variant="p" className="!mt-0">
             {`NT$${currentTotal} / NT$${amount || 0}`}
-            <span className="ml-5 text-xl">
-              {`${(amount || 0) - currentTotal} Left`}
-            </span>
+          </Typography>
+          <Typography variant="p" className="!mt-0 text-xl">
+            {`${(amount || 0) - currentTotal} Left`}
           </Typography>
           <Button
             variant="outline"
             size="sm"
             onClick={handleSplitEqual}
-            className="absolute bottom-0 right-0"
           >
             Split Equally
           </Button>
@@ -302,7 +301,11 @@ function RecordForm({
             <FormItem>
               <FormLabel>Amount</FormLabel>
               <FormControl>
-                <Input placeholder="Amount" {...field} />
+                <Input
+                  placeholder="Amount"
+                  type="number"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -334,7 +337,7 @@ function RecordForm({
               values={form.getValues('toMembers')}
               members={members}
               onSave={({ value }) => {
-                void form.setValue('toMembers', value)
+                void form.setValue('toMembers', value.map((val) => ({ ...val, amount: -val.amount })))
               }}
               dialogTitle="For Whom?"
             />
@@ -357,7 +360,7 @@ function RecordForm({
         {isEdit && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button type="button" variant="destructive" onClick={() => { void handleDelete() }}>
+              <Button type="button" variant="destructive">
                 Delete Record
               </Button>
             </AlertDialogTrigger>
