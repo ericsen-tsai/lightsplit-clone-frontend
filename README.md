@@ -59,7 +59,7 @@ pnpm run build
 
 For more information or for any queries, feel free to reach out to me:
 
-[LinkedIn](https://www.linkedin.com/in/ericsen-tsai-a00948236/)
-[GitHub](https://github.com/ericsen-tsai)
-[GitLab](https://gitlab.com/ericsentsai)
-Email: <bommer95175@gmail.com>
+- [LinkedIn](https://www.linkedin.com/in/ericsen-tsai-a00948236/)
+- [GitHub](https://github.com/ericsen-tsai)
+- [GitLab](https://gitlab.com/ericsentsai)
+- Email: <bommer95175@gmail.com>
