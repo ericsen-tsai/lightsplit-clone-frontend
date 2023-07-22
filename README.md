@@ -2,6 +2,10 @@
 
 A full responsive LightSplit clone made with TailwindCSS and Nextjs.
 
+## Live Demo
+
+[Here](https://easysplit.erichandsen.dev/)
+
 ## Screenshots
 
 ![Group](./public/group.png)
@@ -54,6 +58,10 @@ pnpm run dev
 # Build the project
 pnpm run build
 ```
+
+### Deployment
+
+This project is continuously deployed on [Vercel](https://vercel.com/).
 
 ## Contact
 
