@@ -71,3 +71,7 @@ For more information or for any queries, feel free to reach out to me:
 - [GitHub](https://github.com/ericsen-tsai)
 - [GitLab](https://gitlab.com/ericsentsai)
 - Email: <bommer95175@gmail.com>
+
+## Acknowledgments
+
+Heartfelt thanks to my friend [Aaron Pan](https://www.linkedin.com/in/aaron-pan-4b04ab25b/), the talented Backend Developer, for his valuable collaboration on this project. [Here's](https://github.com/aapan/easysplit) the backend repo.
