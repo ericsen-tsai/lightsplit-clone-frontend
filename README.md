@@ -1,28 +1,65 @@
-# Create T3 App
+# LightSplit Clone Frontend
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+A full responsive LightSplit clone made with TailwindCSS and Nextjs.
 
-## What's next? How do I make an app with this?
+## Screenshots
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+![Group](./public/group.png)
+![Record](./public/record.png)
+![Balance](./public/balance.png)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Tech Stack
 
 - [Next.js](https://nextjs.org)
 - [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+- [shadcn/ui](https://ui.shadcn.com/)
 
-## Learn More
+## Features
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- One-Click Balance Calculation
+- Visualization of Expenses
+- Ability to Add Payment Information
+- Group Creation
+- Adding Shared Expense
+- Balance Review
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+## Getting Started
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+### Prerequisites
 
-## How do I deploy this?
+- node >=18.12.1
+- pnpm >=8.6.3
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+### Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/ericsen-tsai/lightsplit-clone-frontend.git
+
+# Navigate into the project directory
+cd lightsplit-clone-frontend
+
+# Install dependencies
+pnpm install
+
+# Start the development server
+pnpm run dev
+```
+
+### Build
+
+```bash
+# Build the project
+pnpm run build
+```
+
+## Contact
+
+For more information or for any queries, feel free to reach out to me:
+
+[LinkedIn](https://www.linkedin.com/in/ericsen-tsai-a00948236/)
+[GitHub](https://github.com/ericsen-tsai)
+[GitLab](https://gitlab.com/ericsentsai)
+Email: <bommer95175@gmail.com>
