@@ -15,7 +15,6 @@ function GroupCard(props: Group) {
   const {
     name, note, publicPermission, id,
   } = props
-  console.log(id)
   const router = useRouter()
   return (
     <Card className="w-full min-w-[200px]">

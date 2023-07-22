@@ -17,9 +17,6 @@ const fetcher = async <ResponseSchema = Record<string, never>>({
   options?: RequestInit
   errorMessage?: string
 }): Promise<FetcherResponse<ResponseSchema>> => {
-  if (options?.method === 'DELETE') {
-    console.log(endpoint, options, token, 'here')
-  }
   const response = await fetch(`${baseExternalUrl}${endpoint}`, {
     headers: {
       ...options?.method !== 'DELETE' ? { 'Content-Type': 'application/json' } : {},

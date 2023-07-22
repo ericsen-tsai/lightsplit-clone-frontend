@@ -79,7 +79,6 @@ export const recordRouter = createTRPCRouter({
       const token = ctx.session.user.accessToken
       const { recordId, groupId } = input
       const res = await recordAPI.deleteRecord({ token, recordId, groupId })
-      console.log(res)
       return res
     }),
 })

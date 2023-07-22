@@ -20,10 +20,12 @@ type Props = {
   yourMemberId: string
 }
 
-const getPrimaryBalance = (balances: Member['balances'], id: string) => {
-  const balancesInThisGroup = balances.filter((balance) => balance.memberId === id)
-  return balancesInThisGroup.reduce((sum, balance) => balance.balance + sum, 0)
-}
+const getPrimaryBalance = (
+  balances: Member['balances'],
+) => balances.reduce(
+  (sum, balance) => balance.balance + sum,
+  0,
+)
 
 function GroupDashboardTabs({ members, records, yourMemberId }: Props) {
   return (
@@ -41,7 +43,11 @@ function GroupDashboardTabs({ members, records, yourMemberId }: Props) {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <RecordRows members={members} records={records} yourMemberId={yourMemberId} />
+            <RecordRows
+              members={members}
+              records={records}
+              yourMemberId={yourMemberId}
+            />
           </CardContent>
         </Card>
       </TabsContent>
@@ -57,9 +63,9 @@ function GroupDashboardTabs({ members, records, yourMemberId }: Props) {
             {members.map((member) => (
               <BalanceRow
                 username={member.name}
-                balance={getPrimaryBalance(member.balances, member.id)}
+                balance={getPrimaryBalance(member.balances)}
                 maxBalance={Math.max(
-                  ...members.map((m) => Math.abs(getPrimaryBalance(m.balances, m.id))),
+                  ...members.map((m) => Math.abs(getPrimaryBalance(m.balances))),
                 )}
                 key={member.name}
               />

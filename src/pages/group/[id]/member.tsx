@@ -102,7 +102,7 @@ function GroupMember() {
     newMembers: { name: string, permission: 'edit' | 'view', id?: string }[],
   ) => {
     const updateUsersPayload = createUpdateUsersPayload({
-      previousMembers: membersData,
+      previousMembers: membersData.filter((member) => member.userId !== groupData?.owner),
       currentMembers: newMembers,
     })
 

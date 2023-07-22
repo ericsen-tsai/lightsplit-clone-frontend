@@ -20,7 +20,6 @@ type Props = {
 function Layout({ children }: Props) {
   const { data: session, status } = useSession()
   const router = useRouter()
-  console.log(status, 'status')
 
   return (
     <div className="relative h-full w-full font-sans">
