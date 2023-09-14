@@ -126,7 +126,7 @@ function GroupForm({
           name="primaryCurrency"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Group Permission</FormLabel>
+              <FormLabel>Primary Currency</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(value as FormSchema['primaryCurrency'])}
                 defaultValue={field.value}
